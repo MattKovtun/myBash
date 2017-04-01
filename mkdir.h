@@ -9,7 +9,6 @@ int mkdir(int argc, const char *argv[]) { // Done
 
 
     string dir_name = argv[1];
-    cout << dir_name<<endl;
     fs::path dir(dir_name);
     if (fs::create_directory(dir)) {
         cout << "Success" << endl;

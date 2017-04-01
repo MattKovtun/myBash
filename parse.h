@@ -55,6 +55,11 @@ int parse(string b) {
         c_args = create_c(tokens, "name");
         mkdir(c_args.size(), c_args.data());     //execvp( c_args[0], const_cast<char* const*>( c_args.data() ) );
     }
+
+    if(func == "rm"){
+        c_args = create_c(tokens, "name");
+        remove(c_args.size(), c_args.data());
+    }
     if (func == "ls") {
         string path;
         for (auto &s: tokens) {
