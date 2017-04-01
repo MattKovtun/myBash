@@ -47,6 +47,7 @@ int parse(string b) {
 
     if (func == "cwd")cwd();
     if (func == "cd") { string path = tokens[1]; }
+    ///////////////
     if (func == "mv") {
         c_args = create_c(tokens, "name");
         move(c_args.size(), c_args.data());
@@ -60,13 +61,8 @@ int parse(string b) {
         c_args = create_c(tokens, "name");
         remove(c_args.size(), c_args.data());
     }
-    if (func == "ls") {
-        string path;
-        for (auto &s: tokens) {
-            if (s != func && s[0] != '-') {
-                path = s;
-            }
-        }
-        ls_boost();
+    if(func == "cp"){
+        c_args = create_c(tokens, "name");
+        cp(c_args.size(), c_args.data());
     }
 };
