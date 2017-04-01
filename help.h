@@ -8,7 +8,7 @@
 #endif //MYBASH_HELP_H
 
 
-void help(){
+void helping(){
     cout << "You typed -h or --help" << endl;
     return;
 }

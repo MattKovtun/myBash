@@ -32,40 +32,37 @@ int parse(string b) {
     istringstream buf(b);
     istream_iterator<string> beg(buf), end;
     vector<string> tokens(beg, end);
-    bool flags[5];
+
+    bool helpT = true;
     for (auto &s: tokens) {
-        //if(s == "-h"){return helping()};
-        if (s == "-l") { flags[0] = 1; }
-        if (s == "--sort=S" || s == "--sort=t" || s == "--sort=X") { flags[1] = 1; }
-        if (s == "-r") { flags[2] = 1; }
-        if (s == "-f") { flags[3] = 1; } // мовчки перезаписувати
-        if (s == "-R") { flags[4] = 1; } //видаляти директорії
-    }
+        if(s == "-h"){
+            helpT = false;
+            helping();}}
     string func = tokens[0];
 
-
-
-    if (func == "cwd")cwd();
-    if (func == "cd") { string path = tokens[1]; }
     ///////////////
-    if (func == "mv") {
-        c_args = create_c(tokens, "name");
-        move(c_args.size(), c_args.data());
-    }
-    if (func == "mkdir") {
-        c_args = create_c(tokens, "name");
-        mkdir(c_args.size(), c_args.data());     //execvp( c_args[0], const_cast<char* const*>( c_args.data() ) );
-    }
+    ///
+    if(helpT) {
+        if (func == "cwd")cwd();
+        if (func == "mv") {
+            c_args = create_c(tokens, "name");
+            move(c_args.size(), c_args.data());
+        }
+        if (func == "mkdir") {
+            c_args = create_c(tokens, "name");
+            mkdir(c_args.size(), c_args.data());     //execvp( c_args[0], const_cast<char* const*>( c_args.data() ) );
+        }
 
-    if(func == "rm"){
-        c_args = create_c(tokens, "name");
-        remove(c_args.size(), c_args.data());
-    }
-    if(func == "cp"){
-        c_args = create_c(tokens, "name");
-        cp(c_args.size(), c_args.data());
-    }
-    if(func == "cd"){
-        cd(tokens[1]);
+        if (func == "rm") {
+            c_args = create_c(tokens, "name");
+            remove(c_args.size(), c_args.data());
+        }
+        if (func == "cp") {
+            c_args = create_c(tokens, "name");
+            cp(c_args.size(), c_args.data());
+        }
+        if (func == "cd") {
+            cd(tokens[1]);
+        }
     }
 };
