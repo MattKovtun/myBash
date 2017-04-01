@@ -12,6 +12,7 @@
 #include "remove.h"
 #include "cp.h"
 #include "mkdir.h"
+#include "TODO.h"
 #include "help.h"
 #include "parse.h"
 #include <algorithm> // ????
@@ -34,7 +35,7 @@ int start_proccess(string command) {
         //      execvp(args[0].c_str(), c_args.data());
         //      vector<char*> c_args;
 
-        vector<string> commands = {"ls", "cwd", "md", "rm", "mv", "cp", "mkdir", "cd"};
+        vector<string> commands = {"ls", "cwd", "md", "rm", "mv", "cp", "mkdir", "cd", "TODO"};
         istringstream buf(command);
         istream_iterator<string> beg(buf), end;
         vector<string> alll(beg, end);
@@ -59,7 +60,7 @@ int main() {
 //    possible_commands.emplace("q", &calc);
 //    call_script("q");
     bool quit = false;
-    cout << "Welcome to my shell" << endl;
+    cout << "Welcome to my shell! Type : \"mkdir -h\" for example, to see help!\nType \"TODO\" to see problems to be solved." << endl;
     while (!quit) {
         string command;
         cout << "~ ";

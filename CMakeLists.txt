@@ -3,7 +3,7 @@ project(myBash)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(SOURCE_FILES main.cpp lsboost.h move.h remove.h cp.h mkdir.h help.h parse.h asking.h)
+set(SOURCE_FILES main.cpp lsboost.h move.h remove.h cp.h mkdir.h help.h parse.h TODO.h)
 add_executable(myBash ${SOURCE_FILES})
 
 FIND_PACKAGE( Boost COMPONENTS program_options filesystem system REQUIRED )

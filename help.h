@@ -9,6 +9,11 @@
 
 
 void helping(){
-    cout << "You typed -h or --help" << endl;
+    printf("To create directory: \"mkdir <path>\"\n"
+                   "To move files: \"mv <from> ... <to(directory/file)>\"\n"
+                   "To remove file/directory: \"rm <path>\"\n"
+                   "Also ls(with no flags), cwd, cd(not working yet)\n"
+                   "Enjoy!\n\tCreated by: Matt & Natalya.");
+
     return;
 }
