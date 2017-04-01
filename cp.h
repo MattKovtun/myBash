@@ -7,6 +7,7 @@
 
 #endif //MYBASH_CP_H
 
+//cp /home/natasha/Test/test.txt /home/natasha/Test/test_2.txt /home/natasha/Bash
 
 bool asking_cp(string d){
     bool answer;
@@ -55,9 +56,5 @@ bool cp(int argc, const char *argv[]) {
         if (argv[i] != string("-f")){
             _cp_copy(argv[i], destination_path, more_than_one_file, answerF);}
     }
-    /*fs::path destination_path("/home/matt/CLionProjects/myBash/copy_test.txt");
-    fs::path source_path("/home/matt/CLionProjects/myBash/copy_test_res.txt");
-    fs::copy_file(source_path, destination_path, fs::copy_option::overwrite_if_exists);*/
-    //fs::copy_option::overwrite_if_exists
 
 }

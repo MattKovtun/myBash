@@ -65,4 +65,7 @@ int parse(string b) {
         c_args = create_c(tokens, "name");
         cp(c_args.size(), c_args.data());
     }
+    if(func == "cd"){
+        cd(tokens[1]);
+    }
 };

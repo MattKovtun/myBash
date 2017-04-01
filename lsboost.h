@@ -21,15 +21,15 @@ void printMap(const multimap<time_t, fs::path> &m) {
         std::cout << elem.second << "\n";
     }
 }
-
+string cd(string new_dir){
+    /*fs::path src(new_dir);
+    fs::current_path(src);
+    cout << fs::current_path() << '\n';*/
+}
 
 string cwd() { // Done
-    char dir[100];
-    getcwd(dir, 100);
-    printf("Current directory is %s\n", dir);
-    return dir;
-    cout << boost::filesystem::current_path().string() << endl;
-}
+    fs::path full_path(fs::current_path());
+    cout << "Current path is: " << full_path << endl;}
 
 
 void ls_boost() {  // Done
