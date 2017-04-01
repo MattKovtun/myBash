@@ -11,7 +11,7 @@
 #include <algorithm> // ????
 #include <sstream> // ????
 
-vector<const char *> create_c(vector<string> tokens, string name_of_program){
+vector<const char *> create_c(const vector<string> &tokens, const string &name_of_program){
     vector<const char *> c_args;
     int i = 0;
     c_args.push_back(name_of_program.c_str());
