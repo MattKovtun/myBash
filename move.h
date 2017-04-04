@@ -8,52 +8,40 @@
 
 
 
-bool askingg(string d){
-    bool answer;
+bool asking_rename() {
     char type;
-    while( !cin.fail() && type!='y' && type!='n' ){
-        cout<< "<-- Do you want to  " << d << " this files? y/n " <<endl;
+    while (!cin.fail() && type != 'y' && type != 'n') {
+        cout << " <-- Do you want to rename these files? y/n " << endl;
         cin >> type;
     }
-    if(type == 'y'){
-        answer = true;
-    }else{
-        answer = false;
-    }
-    return answer;
-}
+    return type == 'y' ? true : false; }
 
-void _copy(string s, fs::path dest, bool more_than_one_file, bool ask) {
+void _copy(string s, fs::path dest, bool ask) {
     fs::path src(s);
-    if (more_than_one_file)dest /= src.filename();
-    if(fs::exists(dest)){
-        if(!ask){
-            ask = askingg("rename");
-        }
-    }else{ask = true;}
-
-    if(ask){
+    if (fs::is_directory(dest))dest /= src.filename();
+    ask = (ask == false ? asking_rename() : true);
+    if (ask) {
         try {
             fs::rename(src, dest);
             cout << "Success" << endl;
         }
         catch (...) {
             cout << "No such file " << s << endl;
-        }}
+        }
+    }
 }
 
 
 int move(int argc, const char *argv[]) {
-    bool more_than_one_file = false;
+    vector<string> to_rename_move;
     bool answerF = false;
-    for (int i = 1; i < argc-1; i++){
-        if(argv[i] == string("-f")){
-            answerF = true;}}
-    if (argc > 4 + int(answerF)) more_than_one_file = true;
-
+    for (int i = 1; i < argc - 2; i++) {
+        answerF = (argv[i] == string("-f") ? true : false);
+        if (argv[i] != string("-f"))to_rename_move.push_back(string(argv[i]));
+    }
     fs::path dest(argv[argc - 2]);  //        ????????
-    for (int i = 1; i < argc - 2; ++i) { // ???????????????
-        if (argv[i] != string("-f")){
-            _copy(argv[i], dest, more_than_one_file, answerF);}
+    for (int i = 0; i < to_rename_move.size(); ++i) { // ???????????????
+        _copy(to_rename_move[i], dest,  answerF);
+
     }
 }

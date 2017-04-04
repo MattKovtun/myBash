@@ -2,48 +2,44 @@
 // Created by natasha on 4/1/17.
 //
 
+////////////////////////////////////////////////////////////
+/////////////////DONE///////////////DONE////////////////////
+////////////////////////////////////////////////////////////
 
-bool asking(string d) {
-    bool answer;
+
+bool asking() {
     char type;
     while (!cin.fail() && type != 'y' && type != 'n') {
-        cout << "<-- Do you want to  " << d << " this files? y/n " << endl;
+        cout << " <-- Do you want to delete these files? y/n " << endl;
         cin >> type;
     }
-//    answer = (type == 'y' ? true: false);
-    if (type == 'y') {
-        answer = true;
-    } else {
-        answer = false;
-    }
-    return answer;
+
+    return type == 'y' ? true : false;
 }
 
-bool remove(int argc, const char *argv[]) { // Done
+int remove(int argc, const char *argv[]) { // Done
 
+    vector<string> to_delete;
     bool answerF = false;
     bool answerR = false;
     for (int i = 1; i < argc - 1; i++) {
-        if (argv[i] == string("-f")) {
-            answerF = true;
-        }
-        if (argv[i] == string("-R")) {
-            answerR = true;
-        }
+        answerF = (argv[i] == string("-f") ? true : false);
+        answerR = (argv[i] == string("-R") ? true : false);
+        if (argv[i] != string("-f") && argv[i] != string("-R"))to_delete.push_back(string(argv[i]));
     }
-    if (!answerF) { answerF = asking("delete"); }
+    if (!answerF) answerF = asking();
+    if (!answerF) return 0;
 
-    for (int i = 1; i < argc - 1; ++i) {
-        if (answerF && argv[i] != string("-f") && argv[i] != string("-R")) {
-            if (answerR == false && fs::is_directory(argv[i])) {
-                cout << "You can't remove directories --> " << argv[i] << endl;
-            } else {
-                if (fs::remove_all(argv[i])) {
-                    cout << "Success" << endl;
-                } else {
-                    cout << "Directory not found" << endl;
-                }
-            }
+    for (int i = 0; i < to_delete.size(); ++i) {
+        if (!answerR && fs::is_directory(to_delete[i])) {
+            cout << "You can't remove directory --> " << to_delete[i] << endl;
+        } else if (fs::remove_all(to_delete[i])) {
+            cout << "Success" << endl;
+        } else {
+            cout << "Directory not found" << endl;
         }
     }
 }
+
+
+
