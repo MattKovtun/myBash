@@ -38,7 +38,7 @@ void parse(string b) {
     string func = tokens[0];
 //    cout << func << endl;
     if (func == "TODO") TODO();
-    if (func == "cwd")cwd();
+    if (func == "pwd")pwd();
     if (func == "mv") {
         c_args = create_c(tokens, "name");
         move(c_args.size(), c_args.data());
@@ -60,7 +60,8 @@ void parse(string b) {
         cd(tokens[1]);
     }
     if (func == "ls") {
-        ls_boost();
+        c_args = create_c(tokens, "name");
+        ls(c_args.size(), c_args.data());
     }
 }
 
