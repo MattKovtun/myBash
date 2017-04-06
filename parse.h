@@ -2,11 +2,14 @@
 // Created by matt on 3/23/17.
 //
 
+#ifndef MYBASH_PARSE_H
+#define MYBASH_PARSE_H
+
+#endif //MYBASH_PARSE_H
 
 
 #include <algorithm> // ????
 #include <sstream> // ????
-
 
 vector<const char *> create_c(const vector<string> &tokens, const string &name_of_program){
     vector<const char *> c_args;
@@ -40,8 +43,6 @@ int parse(string b) {
     ///////////////
     ///
     if(helpT) {
-        cout << func<< endl;
-        if (func == "TODO") TODO();
         if (func == "cwd")cwd();
         if (func == "mv") {
             c_args = create_c(tokens, "name");
@@ -62,9 +63,6 @@ int parse(string b) {
         }
         if (func == "cd") {
             cd(tokens[1]);
-        }
-        if (func == "ls"){
-            ls_boost();
         }
     }
 };
