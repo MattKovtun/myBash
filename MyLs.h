@@ -52,6 +52,6 @@ void ls(int argc, const char *argv[]) {
         if(sorting == "0") sorting = (argv[i] == string ("--sort=t")? "t" : "0");
         if(sorting == "0") sorting = (argv[i] == string ("--sort=X")? "X" : "0");
     }
-    cout << answerL << ", " << answerReverse << ", "<< sorting <<"!"<< endl;
+    //cout << answerL << ", " << answerReverse << ", "<< sorting <<"!"<< endl;
     printMapLs(result_set, answerL, sorting, answerReverse);
     }
