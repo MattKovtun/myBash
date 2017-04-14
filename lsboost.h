@@ -12,7 +12,7 @@ namespace fs = boost::filesystem;
 
 void printMap(const multimap<time_t, fs::path> &m) {
     for (auto elem : m) {
-        std::cout << elem.second << "\n";
+        std::cout << elem.second.filename() << "\n";
     }
 }
 string cd(string new_dir){
@@ -21,7 +21,7 @@ string cd(string new_dir){
     cout << fs::current_path() << '\n';*/
 }
 
-fs::path cwd() { // Done
+fs::path pwd() { // Done
     fs::path full_path(fs::current_path());
     cout << "Current path is: " << full_path << endl;
     return full_path;
@@ -29,7 +29,7 @@ fs::path cwd() { // Done
 
 
 void ls_boost() {  // Done
-    fs::path someDir = cwd();
+    fs::path someDir = pwd();
     fs::directory_iterator end_iter;
     typedef multimap<time_t, fs::path> result_set_t;
     result_set_t result_set;
@@ -41,6 +41,7 @@ void ls_boost() {  // Done
         }
     }
     printMap(result_set);
+
 
 }
 

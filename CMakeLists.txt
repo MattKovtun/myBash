@@ -9,7 +9,5 @@ add_executable(myBash ${SOURCE_FILES})
 FIND_PACKAGE( Boost COMPONENTS program_options filesystem system REQUIRED )
 
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
-target_link_libraries( myBash ${Boost_LIBRARIES} )
+target_link_libraries( myBash ${Boost_LIBRARIES} -lboost_regex)
 
-#add_executable(myLs ${LS_SOURCE_FILES})
-#target_link_libraries( myBash ${Boost_LIBRARIES} )

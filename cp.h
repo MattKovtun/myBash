@@ -35,7 +35,7 @@ int cp(int argc, const char *argv[]) {
     vector<string> to_cp;
     bool answerF = false;
     for (int i = 1; i < argc - 1; i++) {
-        answerF = (argv[i] == string("-f") ? true : false);
+        if(!answerF)answerF = (argv[i] == string("-f") ? true : false);
         if (argv[i] != string("-f"))to_cp.push_back(string(argv[i]));
     }
 

@@ -36,7 +36,7 @@ int move(int argc, const char *argv[]) {
     vector<string> to_rename_move;
     bool answerF = false;
     for (int i = 1; i < argc - 2; i++) {
-        answerF = (argv[i] == string("-f") ? true : false);
+        if(!answerF)answerF = (argv[i] == string("-f") ? true : false);
         if (argv[i] != string("-f"))to_rename_move.push_back(string(argv[i]));
     }
     fs::path dest(argv[argc - 2]);  //        ????????

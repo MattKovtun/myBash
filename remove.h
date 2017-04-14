@@ -23,8 +23,8 @@ int remove(int argc, const char *argv[]) { // Done
     bool answerF = false;
     bool answerR = false;
     for (int i = 1; i < argc - 1; i++) {
-        answerF = (argv[i] == string("-f") ? true : false);
-        answerR = (argv[i] == string("-R") ? true : false);
+        if(!answerF)answerF = (argv[i] == string("-f") ? true : false);
+        if(!answerR)answerR = (argv[i] == string("-R") ? true : false);
         if (argv[i] != string("-f") && argv[i] != string("-R"))to_delete.push_back(string(argv[i]));
     }
     if (!answerF) answerF = asking();
