@@ -30,15 +30,11 @@ void parse(string b) {
     istream_iterator<string> beg(buf), end;
     vector<string> tokens(beg, end);
 
-    for (auto &s: tokens) {
-        if (s == "-h" || s == "-help") {
-            return helping();
-        }
-    }
+
     string func = tokens[0];
 //    cout << func << endl;
     if (func == "TODO") TODO();
-    if (func == "pwd")pwd();
+    if (func == "pwd")pwd(b);
     if (func == "mv") {
         c_args = create_c(tokens, "name");
         move(c_args.size(), c_args.data());

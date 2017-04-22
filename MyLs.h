@@ -122,6 +122,14 @@ multimap<time_t, fs::path> lsDir(fs::path someDir, const boost::regex my_filter)
 };
 
 void ls(int argc, const char *argv[]) {
+
+    bool h = false;
+    for (int i = 1; i < argc - 1; i++){
+        if(!h) h = (argv[i] == string("-h") ? true : false);
+        if(!h) h = (argv[i] == string("--help") ? true : false);
+    }
+    if(h){helping(5);}
+    else{
     fs::path someDir;
     typedef multimap<time_t, fs::path> result_set_t;
     result_set_t result_set;
@@ -165,21 +173,35 @@ void ls(int argc, const char *argv[]) {
 
     /*const boost::regex my_filter( "r.*.txt" );
     mask("/home/natasha", my_filter);*/
-    }
+    }}
 
 
-// ls [якісь букви] -- будь-який набір з цих букв (можна і менше, можна більше)
-//ls [mBashyYtujv]
+// ls [якісь букви]+ -- будь-який набір з цих букв
+//ls [mBashyYtujv]+
 //myBash
 
-// ls якісьбукви.* -- замість крапки-зірка що-небудь
+
+// ls якісьбукви.* -- спочатку ці букви, а замість крапки-зірка що-небудь
 //ls m.*
 //myBash.cbp
 //myBash
 
-// ls (що-небудь)+ -- плюс гарантує хоча б одне входження виражу в дужках (або якщо немає дужок то ост буква)
+// ls (якісьбукви)+ -- плюс гарантує хоча б одне входження виразу в дужках (або якщо немає дужок то входження останньої букви перед *)
 //наприклад, ab+c -- abc abbbc abbc АЛЕ НЕ  ac
 //ls myBash(.cbp)+
 //myBash.cbp
 
-//https://habrahabr.ru/post/115825/
+// ls якісьбукви? -- знак запитання гарантує одне або нуль потраплянь букви перед ? (не більше)
+//ls /home/natasha/Test  baaaa?ba.txt (4 a)
+//baaaba.txt (3 a)
+
+
+// ls ^буква{кількість разів} або  ^буква{від, до}-- ця буква трапиться стільки разів
+//ls /home/natasha/Test ^a{5}.txt
+//aaaaa.txt
+// ls /home/natasha/Test  ^a{2,7}.txt
+// aaaaa.txt
+//ls /home/natasha/Test  ^a{6}.txt
+//нічого
+
+//http://www.boost.org/doc/libs/1_55_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html

@@ -33,6 +33,14 @@ void _cp_copy(string s, fs::path destination_path, bool ask) {
 
 int cp(int argc, const char *argv[]) {
     vector<string> to_cp;
+
+    bool h = false;
+    for (int i = 1; i < argc - 1; i++){
+        if(!h) h = (argv[i] == string("-h") ? true : false);
+        if(!h) h = (argv[i] == string("--help") ? true : false);
+    }
+    if(h){helping(4);}
+    else{
     bool answerF = false;
     for (int i = 1; i < argc - 1; i++) {
         if(!answerF)answerF = (argv[i] == string("-f") ? true : false);
@@ -44,4 +52,4 @@ int cp(int argc, const char *argv[]) {
         _cp_copy(argv[i], destination_path, answerF);
 
     }
-}
+}}

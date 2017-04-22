@@ -8,6 +8,7 @@
 
 
 
+
 bool asking_rename() {
     char type;
     while (!cin.fail() && type != 'y' && type != 'n') {
@@ -34,6 +35,14 @@ void _copy(string s, fs::path dest, bool ask) {
 
 int move(int argc, const char *argv[]) {
     vector<string> to_rename_move;
+
+    bool h = false;
+    for (int i = 1; i < argc - 1; i++){
+        if(!h) h = (argv[i] == string("-h") ? true : false);
+        if(!h) h = (argv[i] == string("--help") ? true : false);
+    }
+    if(h){helping(3);}
+    else{
     bool answerF = false;
     for (int i = 1; i < argc - 2; i++) {
         if(!answerF)answerF = (argv[i] == string("-f") ? true : false);
@@ -43,5 +52,5 @@ int move(int argc, const char *argv[]) {
     for (int i = 0; i < to_rename_move.size(); ++i) { // ???????????????
         _copy(to_rename_move[i], dest,  answerF);
 
-    }
+    }}
 }

@@ -10,39 +10,27 @@ using namespace std;
 
 namespace fs = boost::filesystem;
 
-void printMap(const multimap<time_t, fs::path> &m) {
-    for (auto elem : m) {
-        std::cout << elem.second.filename() << "\n";
-    }
-}
-string cd(string new_dir){
-    /*fs::path src(new_dir);
-    fs::current_path(src);
-    cout << fs::current_path() << '\n';*/
-}
 
-fs::path pwd() { // Done
+string cd(string new_dir){
+    if ( new_dir.find("-h") != std::string::npos|| new_dir.find("--help") != std::string::npos){
+        cout << "cd <path>  -- перейти до шляху <path>"<< endl;
+    }else{
+    fs::path src(new_dir);
+    chdir(src.c_str());
+    fs::path full_path(fs::current_path());
+    cout << full_path << '\n';
+}}
+
+fs::path pwd(string line) { // Done
+    if ( line.find("-h") != std::string::npos|| line.find("--help") != std::string::npos){
+        cout << "pwd - вивести поточний шлях "<< endl;
+    }else{
     fs::path full_path(fs::current_path());
     cout << "Current path is: " << full_path << endl;
     return full_path;
-}
+}}
 
 
-void ls_boost() {  // Done
-    fs::path someDir = pwd();
-    fs::directory_iterator end_iter;
-    typedef multimap<time_t, fs::path> result_set_t;
-    result_set_t result_set;
-    if (fs::exists(someDir) && fs::is_directory(someDir)) {
-        for (fs::directory_iterator dir_iter(someDir); dir_iter != end_iter; ++dir_iter) {
-            if (fs::is_regular_file(dir_iter->status())) {
-                result_set.insert(result_set_t::value_type(fs::last_write_time(dir_iter->path()), *dir_iter));
-            }
-        }
-    }
-    printMap(result_set);
 
-
-}
 
 

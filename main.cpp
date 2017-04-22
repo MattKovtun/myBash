@@ -7,13 +7,14 @@
 #include <boost/filesystem.hpp>
 #include <boost/function.hpp>
 #include <unordered_map>
+#include "help.h"
+
 #include "lsboost.h"
 #include "move.h"
 #include "remove.h"
 #include "cp.h"
 #include "mkdir.h"
 #include "TODO.h"
-#include "help.h"
 #include "MyLs.h"
 #include "parse.h"
 
@@ -21,7 +22,7 @@
 #undef BOOST_NO_CXX11_SCOPED_ENUMS
 namespace fs = boost::filesystem;
 using namespace std;
-vector<string> commands = {"ls", "pwd", "md", "rm", "mv", "cp", "mkdir", "cd", "TODO", "-h", "-help"};
+vector<string> commands = {"ls", "pwd", "md", "rm", "mv", "cp", "mkdir", "cd", "TODO"};
 
 int start_proccess(string command) {
     pid_t pid = fork();

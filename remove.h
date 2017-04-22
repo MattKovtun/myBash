@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////
 
 
+
 bool asking() {
     char type;
     while (!cin.fail() && type != 'y' && type != 'n') {
@@ -22,6 +23,18 @@ int remove(int argc, const char *argv[]) { // Done
     vector<string> to_delete;
     bool answerF = false;
     bool answerR = false;
+    /*for (auto &s: tokens) {
+        if (s == "-h" || s == "-help") {
+            return helping();
+        }
+    }*/
+    bool h = false;
+    for (int i = 1; i < argc - 1; i++){
+        if(!h) h = (argv[i] == string("-h") ? true : false);
+        if(!h) h = (argv[i] == string("--help") ? true : false);
+    }
+    if(h){helping(1);}
+    else{
     for (int i = 1; i < argc - 1; i++) {
         if(!answerF)answerF = (argv[i] == string("-f") ? true : false);
         if(!answerR)answerR = (argv[i] == string("-R") ? true : false);
@@ -38,7 +51,7 @@ int remove(int argc, const char *argv[]) { // Done
         } else {
             cout << "Directory not found" << endl;
         }
-    }
+    }}
 }
 
 
