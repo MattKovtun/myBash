@@ -33,26 +33,33 @@ void parse(string b) {
 
     string func = tokens[0];
 //    cout << func << endl;
-    if (func == "TODO") TODO();
-    else if (func == "pwd")pwd(b);
+    if (func == "TODO") {
+        TODO();
+        return;
+    }
+    else if (func == "pwd"){
+        pwd(b);
+        return;
+    }
     else if (func == "mv") {
-        c_args = create_c(tokens, "name");
-        move(c_args.size(), c_args.data());
-    } else if (func == "mkdir") {
-        c_args = create_c(tokens, "mkdir");
+        c_args = create_c(tokens, "./mv");
 
-//        execvp( c_args[0], const_cast<char* const*>( c_args.data() ) );
+    } else if (func == "mkdir") {
+        c_args = create_c(tokens, "./mkdir");
+
+
     } else if (func == "rm") {
-        c_args = create_c(tokens, "rm");
-//        remove(c_args.size(), c_args.data());
+        c_args = create_c(tokens, "./rm");
+
     } else if (func == "cp") {
-        c_args = create_c(tokens, "name");
-        cp(c_args.size(), c_args.data());
+        c_args = create_c(tokens, "./cp");
+
     } else if (func == "cd") {
         cd(tokens[1]);
     } else if (func == "ls") {
         c_args = create_c(tokens, "name");
         ls(c_args.size(), c_args.data());
+        return;
     } else {
         c_args = create_c(tokens, func);
 

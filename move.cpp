@@ -1,5 +1,5 @@
 //
-// Created by natasha on 4/1/17.
+// Created by natasha on 3/20/17.
 //
 
 ////////////////////////////////////////////////////////////
@@ -21,20 +21,33 @@ namespace fs = boost::filesystem;
 using namespace std;
 
 
-bool asking() {
+bool asking_rename() {
     char type;
     while (!cin.fail() && type != 'y' && type != 'n') {
-        cout << " <-- Do you want to delete these files? y/n " << endl;
+        cout << " <-- Do you want to rename these files? y/n " << endl;
         cin >> type;
     }
-
     return type == 'y' ? true : false;
 }
 
-int main(int argc, char *argv[]) { // Done
-    vector<string> to_delete;
-    bool answerF = false;
-    bool answerR = false;
+void _copy(string s, fs::path dest, bool ask) {
+    fs::path src(s);
+    if (fs::is_directory(dest))dest /= src.filename();
+    ask = (ask == false ? asking_rename() : true);
+    if (ask) {
+        try {
+            fs::rename(src, dest);
+            cout << "Success" << endl;
+        }
+        catch (...) {
+            cout << "No such file " << s << endl;
+        }
+    }
+}
+
+
+int main(int argc, const char *argv[]) {
+    vector<string> to_rename_move;
 
     bool h = false;
     for (int i = 1; i < argc; i++) {
@@ -42,28 +55,19 @@ int main(int argc, char *argv[]) { // Done
         if (!h) h = (argv[i] == string("--help") ? true : false);
     }
     if (h) {
-        helping(1);
+        helping(3);
         return 0;
     }
-    for (int i = 1; i < argc; i++) {
-        if (!answerF)answerF = (argv[i] == string("-f") ? true : false);
-        if (!answerR)answerR = (argv[i] == string("-R") ? true : false);
-        if (argv[i] != string("-f") && argv[i] != string("-R"))to_delete.push_back(string(argv[i]));
-    }
 
-    if (!answerF) answerF = asking();
-    if (!answerF) return 0;
-    for (int i = 0; i < to_delete.size(); ++i) {
-        if (!answerR && fs::is_directory(to_delete[i])) {
-            cout << "You can't remove directory --> " << to_delete[i] << endl;
-        } else if (fs::remove_all(to_delete[i])) {
-            cout << "Success" << endl;
-        } else {
-            cout << "Directory not found" << endl;
-        }
+    bool answerF = false;
+    for (int i = 1; i < argc - 1; i++) {
+        if (!answerF)answerF = (argv[i] == string("-f") ? true : false);
+        if (argv[i] != string("-f"))to_rename_move.push_back(string(argv[i]));
+    }
+    fs::path dest(argv[argc - 1]);  //        ????????
+    for (int i = 0; i < to_rename_move.size(); ++i) { // ???????????????
+        _copy(to_rename_move[i], dest, answerF);
+
     }
 }
-
-
-
 
