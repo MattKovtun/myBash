@@ -7,13 +7,12 @@
 #include <boost/filesystem.hpp>
 #include <boost/function.hpp>
 #include <unordered_map>
-#include "help.h"
 
+#include "help.h"
 #include "lsboost.h"
 #include "move.h"
-#include "remove.h"
 #include "cp.h"
-#include "mkdir.h"
+
 #include "TODO.h"
 #include "MyLs.h"
 #include "parse.h"
@@ -52,16 +51,12 @@ int start_proccess(string command) {
 
 int main() {
 
-//    possible_commands.emplace("q", &calc);
-//    call_script("q");
     bool quit = false;
     cout << "Welcome to my shell! Type : \"mkdir -h\" for example, to see help!\nType \"TODO\" to see problems to be solved." << endl;
     while (!quit) {
         string command;
         cout << "~ ";
         getline(cin, command);
-//        cin >> command;
-//        cout << command << endl;
         if (command == "quit") {
             quit = true;
             break;
@@ -70,3 +65,5 @@ int main() {
     }
 }
 
+// to add repsonse from child process add flush
+//   /home/matt/CLionProjects/myBash
