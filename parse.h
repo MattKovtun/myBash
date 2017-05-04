@@ -37,10 +37,6 @@ void parse(string b) {
         TODO();
         return;
     }
-    else if (func == "pwd"){
-        pwd(b);
-        return;
-    }
     else if (func == "mv") {
         c_args = create_c(tokens, "./mv");
 
@@ -54,12 +50,6 @@ void parse(string b) {
     } else if (func == "cp") {
         c_args = create_c(tokens, "./cp");
 
-    } else if (func == "cd") {
-        cd(tokens[1]);
-    } else if (func == "ls") {
-        c_args = create_c(tokens, "name");
-        ls(c_args.size(), c_args.data());
-        return;
     } else {
         c_args = create_c(tokens, func);
 

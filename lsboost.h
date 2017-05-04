@@ -11,13 +11,18 @@ using namespace std;
 namespace fs = boost::filesystem;
 
 
-string cd(string new_dir) {
+int cd(string new_dir) {
     if (new_dir.find("-h") != std::string::npos || new_dir.find("--help") != std::string::npos) {
         cout << "cd <path>  -- перейти до шляху <path>" << endl;
     } else {
-
-        cout << chdir(new_dir.c_str()) << endl;
-        perror("Failed to do cd");
+        int status =chdir(new_dir.c_str());
+        if (status == -1){
+            cout << "no such directory" <<endl;
+            return -1;
+        }
+        chdir(new_dir.c_str());
+        return 1;
+//        perror("Failed to do cd");
 
     }
 }
@@ -27,7 +32,7 @@ fs::path pwd(string line) { // Done
         cout << "pwd - вивести поточний шлях " << endl;
     } else {
         fs::path full_path(fs::current_path());
-        cout <<  full_path << endl;
+        cout << full_path << endl;
         return full_path;
     }
 }
