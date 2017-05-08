@@ -11,6 +11,7 @@ using namespace std;
 namespace fs = boost::filesystem;
 
 #include <boost/regex.hpp>
+#include <iomanip>
 
 //отримати розмір папки
 void  getFoldersize(string rootFolder,unsigned long long & f_size)
@@ -65,7 +66,7 @@ void printMapLs(const multimap<time_t, fs::path> &m, bool answerL ,string sortin
         sort (vector1.begin(), vector1.end(), less_Extension);
     }
     if (sorting == "N"){
-        sort (vector1.begin(), vector1.end());
+        sort(vector1.begin(), vector1.end());
     }
     if(answerReverse){
         std::reverse(vector1.begin(),vector1.end());
@@ -73,11 +74,11 @@ void printMapLs(const multimap<time_t, fs::path> &m, bool answerL ,string sortin
     for(int i = 0; i < vector1.size(); i++){
     if(answerL){
         std::time_t t = boost::filesystem::last_write_time(vector1[i]);
-        if(fs::is_directory(vector1[i]))cout<<"/" << vector1[i].filename().string() << " size: " <<getSize(vector1[i]) <<" time last modification: " << std::ctime( &t )<< endl;
-        else cout<< vector1[i].filename().string() << " size: " <<getSize(vector1[i]) <<" time last modification: " << std::ctime( &t )<< endl;
+        if(fs::is_directory(vector1[i]))cout << std::left << std::setfill(' ')<< std::setw(40) <<"/" + vector1[i].filename().string() << " size: " << std::left << std::setfill(' ')<< std::setw(15) << getSize(vector1[i]) <<" time last modification: " <<std::left << std::setfill(' ')<< std::setw(30)<< std::ctime( &t )<< endl;
+        else cout << std::left << std::setfill(' ')<< std::setw(40) << vector1[i].filename().string() << " size: " <<std::left << std::setfill(' ')<< std::setw(15)<<getSize(vector1[i]) <<" time last modification: " <<std::left << std::setfill(' ')<< std::setw(30) << std::ctime( &t )<< endl;
     }else{
-        if(fs::is_directory(vector1[i]))cout<<"/" << vector1[i].filename().string()<<endl;
-        else cout<< vector1[i].filename().string() << endl;
+        if(fs::is_directory(vector1[i]))cout<< std::left << std::setfill(' ')<< std::setw(50)<<"/" + vector1[i].filename().string()<<endl;
+        else cout<< std::left << std::setfill(' ')<< std::setw(50)<< vector1[i].filename().string() << endl;
     }
     }
 }
@@ -133,7 +134,7 @@ void ls(int argc, const char *argv[]) {
     fs::path someDir;
     typedef multimap<time_t, fs::path> result_set_t;
     result_set_t result_set;
-    vector <string> flagsLs = {"-l", "-h", "--sort=U", "--sort=S", "--sort=t", "--sort=X", "-r"};
+    vector <string> flagsLs = {"-l", "-h", "--sort=U", "--sort=S", "--sort=t", "--sort=X", "-r", "--sort=N"};
     if (argc != 2&& find(flagsLs.begin(), flagsLs.end(), argv[1]) == flagsLs.end()) {// перевірка чи перший ел це диреткорія (або маска)
         if (fs::is_directory(argv[1])){
             someDir = argv[1];// це директорія !!!
@@ -159,16 +160,17 @@ void ls(int argc, const char *argv[]) {
 
     //парс
     bool answerL = false;
-    string sorting = "N";
+    string sorting = "0";
     bool answerReverse = false;
     for (int i = 1; i < argc - 1; i++) {
         if(!answerL)answerL = (argv[i] == string("-l") ? true : false);
         if(!answerReverse)answerReverse = (argv[i] == string("-r") ? true : false);
-        if(sorting == "N") sorting = (argv[i] == string ("--sort=U")? "U" : "0");
-        if(sorting == "N") sorting = (argv[i] == string ("--sort=S")? "S" : "0");
-        if(sorting == "N") sorting = (argv[i] == string ("--sort=t")? "t" : "0");
-        if(sorting == "N") sorting = (argv[i] == string ("--sort=X")? "X" : "0");
+        if(sorting == "0") sorting = (argv[i] == string ("--sort=U")? "U" : "0");
+        if(sorting == "0") sorting = (argv[i] == string ("--sort=S")? "S" : "0");
+        if(sorting == "0") sorting = (argv[i] == string ("--sort=t")? "t" : "0");
+        if(sorting == "0") sorting = (argv[i] == string ("--sort=X")? "X" : "0");
     }
+    if(sorting == "0") sorting = "N";
     printMapLs(result_set, answerL, sorting, answerReverse);
 
     /*const boost::regex my_filter( "r.*.txt" );
