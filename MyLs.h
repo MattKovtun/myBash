@@ -2,11 +2,6 @@
 // Created by natasha on 06.04.17.
 //
 
-#ifndef MYBASH_MYLS_H
-#define MYBASH_MYLS_H
-
-#endif //MYBASH_MYLS_H
-
 using namespace std;
 namespace fs = boost::filesystem;
 

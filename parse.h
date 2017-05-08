@@ -33,31 +33,30 @@ void parse(string b) {
 
     string func = tokens[0];
 //    cout << func << endl;
-    if (func == "TODO") TODO();
-    if (func == "pwd")pwd(b);
-    if (func == "mv") {
-        c_args = create_c(tokens, "name");
-        move(c_args.size(), c_args.data());
+    if (func == "TODO") {
+        TODO();
+        return;
     }
-    if (func == "mkdir") {
-        c_args = create_c(tokens, "name");
-        mkdir(c_args.size(), c_args.data());     //execvp( c_args[0], const_cast<char* const*>( c_args.data() ) );
+    else if (func == "mv") {
+        c_args = create_c(tokens, "./mv");
+
+    } else if (func == "mkdir") {
+        c_args = create_c(tokens, "./mkdir");
+
+
+    } else if (func == "rm") {
+        c_args = create_c(tokens, "./rm");
+
+    } else if (func == "cp") {
+        c_args = create_c(tokens, "./cp");
+
+    } else {
+        c_args = create_c(tokens, func);
+
     }
 
-    if (func == "rm") {
-        c_args = create_c(tokens, "name");
-        remove(c_args.size(), c_args.data());
-    }
-    if (func == "cp") {
-        c_args = create_c(tokens, "name");
-        cp(c_args.size(), c_args.data());
-    }
-    if (func == "cd") {
-        cd(tokens[1]);
-    }
-    if (func == "ls") {
-        c_args = create_c(tokens, "name");
-        ls(c_args.size(), c_args.data());
-    }
+    execvp(c_args[0], const_cast<char *const *>( c_args.data()));
+    perror("Failed to start excec");
+
 }
 
