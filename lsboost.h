@@ -20,8 +20,8 @@ int cd(string new_dir) {
             cout << "no such directory" <<endl;
             return -1;
         }
-        chdir(new_dir.c_str());
-        return 1;
+        return chdir(new_dir.c_str());
+
 //        perror("Failed to do cd");
 
     }
@@ -29,7 +29,7 @@ int cd(string new_dir) {
 
 fs::path pwd(string line) { // Done
     if (line.find("-h") != std::string::npos || line.find("--help") != std::string::npos) {
-        cout << "pwd - вивести поточний шлях " << endl;
+        cout << "cwd - вивести поточний шлях " << endl;
     } else {
         fs::path full_path(fs::current_path());
         cout << full_path << endl;

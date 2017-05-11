@@ -28,22 +28,24 @@ bool asking_cp() {
         cout << " <-- Do you want to copy these files? y/n " << endl;
         cin >> type;
     }
-    return type == 'y' ? true : false;
+    return type == 'y';
 }
 
-void _cp_copy(string s, fs::path destination_path, bool ask) {
+void cp_copy(string s, fs::path destination_path, bool ask) {
     fs::path source_path(s);
-    if (fs::is_directory(destination_path))destination_path /= source_path.filename();
-    ask = (ask == false ? asking_cp() : true);
-    if (ask) {
-        try {
-            fs::copy_file(source_path, destination_path, fs::copy_option::overwrite_if_exists);
-            cout << "Success" << endl;
-        }
-        catch (...) {
-            cout << "No such file " << s << endl;
-        }
+
+    if (fs::exists(destination_path)) ask = (ask == false ? asking_cp() : true);
+    if (!ask && fs::exists(destination_path)) return;
+    if (fs::is_directory(destination_path))
+        destination_path /= source_path.filename();
+    try {
+        fs::copy_file(source_path, destination_path, fs::copy_option::overwrite_if_exists);
+        cout << "Success" << endl;
     }
+    catch (...) {
+        cout << "No such file " << s << endl;
+    }
+
 }
 
 int main(int argc, const char *argv[]) {
@@ -51,8 +53,8 @@ int main(int argc, const char *argv[]) {
 
     bool h = false;
     for (int i = 1; i < argc; i++) {
-        if (!h) h = (argv[i] == string("-h") ? true : false);
-        if (!h) h = (argv[i] == string("--help") ? true : false);
+        if (!h) h = (argv[i] == string("-h"));
+        if (!h) h = (argv[i] == string("--help"));
     }
     if (h) {
         helping(4);
@@ -60,13 +62,14 @@ int main(int argc, const char *argv[]) {
     }
     bool answerF = false;
     for (int i = 1; i < argc; i++) {
-        if (!answerF)answerF = (argv[i] == string("-f") ? true : false);
+        if (!answerF) answerF = (argv[i] == string("-f"));
         if (argv[i] != string("-f"))to_cp.push_back(string(argv[i]));
     }
 
-    fs::path destination_path(argv[argc - 2]);  //        ????????
-    for (int i = 1; i < argc - 1; ++i) { // ???????????????
-        _cp_copy(argv[i], destination_path, answerF);
+    fs::path destination_path(argv[argc - 1]);
+    for (int i = 1; i < argc - 1; ++i) {
+//        cout << "File: " << argv[i] << " to " << destination_path << endl;
+        cp_copy(argv[i], destination_path, answerF);
 
     }
 }
