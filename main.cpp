@@ -21,7 +21,15 @@
 namespace fs = boost::filesystem;
 using namespace std;
 vector<string> commands = {"md", "rm", "mv", "cp", "mkdir", "TODO"};
-vector<string> builtin = {"ls", "pwd", "cd"};
+vector<string> builtin = {"ls", "cwd", "cd"};
+
+vector<string> tokenize(string b) {
+    istringstream buf(b);
+    istream_iterator<string> beg(buf), end;
+    vector<string> tokens(beg, end);
+    return tokens;
+}
+
 
 void start_builtin_func(string b) {
     istringstream buf(b);
@@ -36,7 +44,7 @@ void start_builtin_func(string b) {
         c_args = create_c(tokens, "name");
         ls(c_args.size(), c_args.data());
         return;
-    } else if (func == "pwd") {
+    } else if (func == "cwd") {
         pwd(b);
         return;
     }
@@ -46,7 +54,7 @@ void start_builtin_func(string b) {
 int start_process(string command) {
     istringstream buf(command);
     istream_iterator<string> beg(buf), end;
-    vector<string> vector_commands(beg, end);
+    vector<string> vector_commands = tokenize(command);
     if (find(builtin.begin(), builtin.end(), vector_commands[0]) != builtin.end()) {
         start_builtin_func(command);
         return 1;
@@ -57,9 +65,10 @@ int start_process(string command) {
         perror("fork failed");
         exit(EXIT_FAILURE);
     } else if (pid == 0) {
-        if (find(commands.begin(), commands.end(), vector_commands[0]) != commands.end()) { //пошук наявності команди у всіх командах
-            parse(command);
-        } else cout << "Command not found" << endl;
+//        if (find(commands.begin(), commands.end(), vector_commands[0]) !=
+//            commands.end()) { //пошук наявності команди у всіх командах
+        parse(command);
+//        } else cout << "Command not found" << endl;
 
 //        cout << endl;
         _exit(EXIT_SUCCESS);
@@ -81,11 +90,16 @@ int main() {
     while (!quit) {
         string command;
         cout << "~ ";
+
         getline(cin, command);
-        if (command == "quit") {
-            quit = true;
-            break;
+        if (command.empty())continue;
+
+        vector<string> vector_commands = tokenize(command);
+        if (vector_commands[0] == "exit") {
+            int status = stoi(vector_commands[1]);
+            return status;
         }
+
         start_process(command);
     }
 }
