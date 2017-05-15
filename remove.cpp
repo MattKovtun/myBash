@@ -51,12 +51,14 @@ int main(int argc, char *argv[]) { // Done
         if (argv[i] != string("-f") && argv[i] != string("-R"))to_delete.push_back(string(argv[i]));
     }
 
-    if (!answerF) answerF = asking();
-    if (!answerF) return 0;
+//    if (!answerF) answerF = asking();
+//    if (!answerF) return 0;
     for (int i = 0; i < to_delete.size(); ++i) {
         if (!answerR && fs::is_directory(to_delete[i])) {
             cout << "You can't remove directory --> " << to_delete[i] << endl;
         } else if (fs::remove_all(to_delete[i])) {
+            if (!answerF) answerF = asking();
+            if (!answerF) return 0;
             cout << "Success" << endl;
         } else {
             cout << "Directory not found" << endl;

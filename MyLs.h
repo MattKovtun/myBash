@@ -124,7 +124,7 @@ void ls(int argc, const char *argv[]) {
         if(!h) h = (argv[i] == string("-h") ? true : false);
         if(!h) h = (argv[i] == string("--help") ? true : false);
     }
-    if(h){helping(5);}
+    if(h){helping(5);helping(6);}
     else{
     fs::path someDir;
     typedef multimap<time_t, fs::path> result_set_t;
@@ -134,8 +134,11 @@ void ls(int argc, const char *argv[]) {
         if (fs::is_directory(argv[1])){
             someDir = argv[1];// це директорія !!!
             if (argc > 3 && find(flagsLs.begin(), flagsLs.end(), argv[2]) == flagsLs.end()) {
+                if(argv[2][0] != '*'){
                 const boost::regex my_filter1(argv[2]);
-                result_set = lsDir(someDir, my_filter1);
+                result_set = lsDir(someDir, my_filter1);}
+                else{cout << "Error: you can't start expression with *" << endl;
+                    helping(6);}
             }
             else{
                 const boost::regex my_filter2("0");
@@ -144,8 +147,11 @@ void ls(int argc, const char *argv[]) {
             }
         }
         else {
+            if(argv[1][0]!= '*'){
             const boost::regex my_filter3(argv[1]);
-            result_set = lsDir(fs::current_path(), my_filter3);
+            result_set = lsDir(fs::current_path(), my_filter3);}
+            else{cout << "Error: you can't start expression with * " << endl;
+                helping(6);}
         }
     }else{
         const boost::regex my_filter4("0");
