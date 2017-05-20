@@ -20,8 +20,9 @@
 #undef BOOST_NO_CXX11_SCOPED_ENUMS
 namespace fs = boost::filesystem;
 using namespace std;
-vector<string> commands = {"md", "rm", "mv", "cp", "mkdir", "TODO"};
+vector<string> commands = {"md", "rm", "mv", "cp", "mkdir", "TODO", "readfile"};
 vector<string> builtin = {"ls", "cwd", "cd"};
+
 
 vector<string> tokenize(string b) {
     istringstream buf(b);
@@ -67,7 +68,27 @@ int start_process(string command) {
     } else if (pid == 0) {
 //        if (find(commands.begin(), commands.end(), vector_commands[0]) !=
 //            commands.end()) { //пошук наявності команди у всіх командах
-        parse(command);
+        istringstream buf(command);
+        vector<const char *> c_args;
+        istream_iterator<string> beg(buf), end;
+        vector<string> tokens(beg, end);
+        string func = tokens[0];
+        if (func == "readfile"){
+            std::ifstream infile(tokens[1]);
+            std::string line;
+            vector <string> commands;
+            while (std::getline(infile, line))
+            {
+                commands.push_back(line);
+            }
+            infile.close();
+            for(int i =0; i < commands.size(); i++){
+                cout<< "~ "<<commands[i] << endl;
+                start_process(commands[i]);
+            }
+
+        }else{
+        parse(command);}
 //        } else cout << "Command not found" << endl;
 
 //        cout << endl;
@@ -81,27 +102,40 @@ int start_process(string command) {
 }
 
 
-int main() {
+int main(int argc, char *argv[]) {
+    if (argc == 2) {
+        std::ifstream file(argv[1]);
+        std::string str;
+        while (std::getline(file, str)) {
+            start_process(str);
+        }
+        return 0;
+    }
 
-    bool quit = false;
-    cout
-            << "Welcome to my shell! Type : \"mkdir -h\" for example, to see help!\nType \"TODO\" to see problems to be solved."
-            << endl;
-    while (!quit) {
-        string command;
-        cout << "~ ";
+        bool quit = false;
+        cout
+                << "Welcome to my shell! Type : \"mkdir -h\" for example, to see help!\nType \"TODO\" to see problems to be solved."
+                << endl;
+        parse:DIRECTORY_PATH = (fs::current_path());
+        while (!quit) {
+            string command;
+            cout << "~ ";
 
-        getline(cin, command);
-        if (command.empty())continue;
+            getline(cin, command);
+            string tmp = command;
+            tmp.erase(std::remove(tmp.begin(),tmp.end(),' '),tmp.end());
+            if (tmp.empty())continue;
 
-        vector<string> vector_commands = tokenize(command);
-        if (vector_commands[0] == "exit") {
-            int status = stoi(vector_commands[1]);
-            return status;
+            vector<string> vector_commands = tokenize(command);
+            if (vector_commands[0] == "exit" && vector_commands.size() >= 2) {
+                int status = stoi(vector_commands[1]);
+                return status;
+            } else if (vector_commands[0] == "exit")
+                return 0;
+
+            start_process(command);
         }
 
-        start_process(command);
-    }
 }
 
 // to add repsonse from child process add flush

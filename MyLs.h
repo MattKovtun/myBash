@@ -137,7 +137,7 @@ void ls(int argc, const char *argv[]) {
                 if(argv[2][0] != '*'){
                 const boost::regex my_filter1(argv[2]);
                 result_set = lsDir(someDir, my_filter1);}
-                else{cout << "Error: you can't start expression with *" << endl;
+                else{cout << "Error: you can't start expression with *(you can start with .*   )" << endl;
                     helping(6);}
             }
             else{

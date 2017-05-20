@@ -1,12 +1,8 @@
-//
-// Created by matt on 3/23/17.
-//
-
-
-
 #include <algorithm> // ????
 #include <sstream> // ????
 
+
+fs::path DIRECTORY_PATH;
 
 vector<const char *> create_c(const vector<string> &tokens, const string &name_of_program) {
     vector<const char *> c_args;
@@ -36,27 +32,29 @@ void parse(string b) {
     if (func == "TODO") {
         TODO();
         return;
-    }
-    else if (func == "mv") {
-        c_args = create_c(tokens, "./mv");
+    } else if (func == "mv") {
+        c_args = create_c(tokens, "mv");
 
     } else if (func == "mkdir") {
-        c_args = create_c(tokens, "./mkdir");
+        c_args = create_c(tokens, "mkdir");
 
 
     } else if (func == "rm") {
-        c_args = create_c(tokens, "./rm");
+        c_args = create_c(tokens, "rm");
 
     } else if (func == "cp") {
-        c_args = create_c(tokens, "./cp");
+        c_args = create_c(tokens, "cp");
 
     } else {
         c_args = create_c(tokens, func);
-
+        execvp(c_args[0], const_cast<char *const *>( c_args.data()));
+        return;
     }
 
-    execvp(c_args[0], const_cast<char *const *>( c_args.data()));
+    string s = DIRECTORY_PATH.string() + "/" + func;
+
+    const char *path = s.c_str();
+    execvp(path, const_cast<char *const *>( c_args.data()));
     perror("Failed to start excec");
 
 }
-

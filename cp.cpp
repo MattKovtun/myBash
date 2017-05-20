@@ -67,9 +67,9 @@ int main(int argc, const char *argv[]) {
     }
 
     fs::path destination_path(argv[argc - 1]);
-    for (int i = 1; i < argc - 1; ++i) {
+    for (int i = 0; i < to_cp.size(); ++i) {
 //        cout << "File: " << argv[i] << " to " << destination_path << endl;
-        cp_copy(argv[i], destination_path, answerF);
+        cp_copy(to_cp[i], destination_path, answerF);
 
     }
 }
