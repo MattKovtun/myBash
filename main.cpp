@@ -39,7 +39,9 @@ void start_builtin_func(string b) {
     vector<string> tokens(beg, end);
     string func = tokens[0];
     if (func == "cd") {
-        cd(tokens[1]);
+        if(tokens.size() != 1){
+        cd(tokens[1]);}
+        else{cout << "Please enter directory... "<< endl;}
         return;
     } else if (func == "ls") {
         c_args = create_c(tokens, "name");
@@ -72,23 +74,8 @@ int start_process(string command) {
         vector<const char *> c_args;
         istream_iterator<string> beg(buf), end;
         vector<string> tokens(beg, end);
-        string func = tokens[0];
-        if (func == "readfile"){
-            std::ifstream infile(tokens[1]);
-            std::string line;
-            vector <string> commands;
-            while (std::getline(infile, line))
-            {
-                commands.push_back(line);
-            }
-            infile.close();
-            for(int i =0; i < commands.size(); i++){
-                cout<< "~ "<<commands[i] << endl;
-                start_process(commands[i]);
-            }
 
-        }else{
-        parse(command);}
+        parse(command);
 //        } else cout << "Command not found" << endl;
 
 //        cout << endl;
@@ -103,10 +90,12 @@ int start_process(string command) {
 
 
 int main(int argc, char *argv[]) {
+    parse:DIRECTORY_PATH = (fs::current_path());
     if (argc == 2) {
         std::ifstream file(argv[1]);
         std::string str;
         while (std::getline(file, str)) {
+            cout << "~ " << str << endl;
             start_process(str);
         }
         return 0;
@@ -116,7 +105,7 @@ int main(int argc, char *argv[]) {
         cout
                 << "Welcome to my shell! Type : \"mkdir -h\" for example, to see help!\nType \"TODO\" to see problems to be solved."
                 << endl;
-        parse:DIRECTORY_PATH = (fs::current_path());
+
         while (!quit) {
             string command;
             cout << "~ ";

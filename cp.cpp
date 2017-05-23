@@ -31,13 +31,11 @@ bool asking_cp() {
     return type == 'y';
 }
 
-void cp_copy(string s, fs::path destination_path, bool ask) {
+void cp_copy(string s, fs::path destination_path) {
     fs::path source_path(s);
-
-    if (fs::exists(destination_path)) ask = (ask == false ? asking_cp() : true);
-    if (!ask && fs::exists(destination_path)) return;
-    if (fs::is_directory(destination_path))
-        destination_path /= source_path.filename();
+    if (!fs::exists(source_path))return;
+    if (fs::is_directory(destination_path)){
+        destination_path /= source_path.filename();}
     try {
         fs::copy_file(source_path, destination_path, fs::copy_option::overwrite_if_exists);
         cout << "Success" << endl;
@@ -67,9 +65,26 @@ int main(int argc, const char *argv[]) {
     }
 
     fs::path destination_path(argv[argc - 1]);
-    for (int i = 0; i < to_cp.size(); ++i) {
-//        cout << "File: " << argv[i] << " to " << destination_path << endl;
-        cp_copy(to_cp[i], destination_path, answerF);
+    if(to_cp.size() > 2){
+    for (int i = 0; i < to_cp.size() -1; ++i) {
+        bool ask = answerF;
+        if(!ask){
+        if (fs::exists(destination_path.string() + "/" + to_cp[i])){
+            ask = asking_cp();
+        }else{
+            ask = true;
+        } }
+        if (ask)cp_copy(to_cp[i], destination_path);
 
+    }}
+    else {
+        bool ask = answerF;
+        if(!ask){
+            if (fs::exists(destination_path)){
+                ask = asking_cp();
+            } else{
+                ask = true;
+            }}
+        if (ask)cp_copy(to_cp[0], to_cp[1]);
     }
 }

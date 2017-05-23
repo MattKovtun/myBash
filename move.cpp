@@ -30,24 +30,26 @@ bool asking_rename() {
     return type == 'y';
 }
 
-void my_copy(string s, fs::path dest, bool ask) {
-    fs::path src(s);
-    if (fs::is_directory(dest))dest /= src.filename();
-    ask = (ask == false ? asking_rename() : true);
-    if (ask) {
-        try {
-            fs::rename(src, dest);
-            cout << "Success" << endl;
-        }
-        catch (...) {
-            cout << "No such file " << s << endl;
-        }
+
+
+void my_copy(string s, fs::path destination_path) {
+    fs::path source_path(s);
+    if (!fs::exists(source_path))return;
+    if (fs::is_directory(destination_path)){
+        destination_path /= source_path.filename();}
+    try {
+        fs::rename(s, destination_path);
+        cout << "Success" << endl;
     }
+    catch (...) {
+        cout << "No such file " << s << endl;
+    }
+
 }
 
-
 int main(int argc, const char *argv[]) {
-    vector<string> to_rename_move;
+
+    vector<string> to_mv;
 
     bool h = false;
     for (int i = 1; i < argc; i++) {
@@ -58,16 +60,34 @@ int main(int argc, const char *argv[]) {
         helping(3);
         return 0;
     }
-
     bool answerF = false;
-    for (int i = 1; i < argc - 1; i++) {
-        if (!answerF)answerF = (argv[i] == string("-f"));
-        if (argv[i] != string("-f"))to_rename_move.push_back(string(argv[i]));
+    for (int i = 1; i < argc; i++) {
+        if (!answerF) answerF = (argv[i] == string("-f"));
+        if (argv[i] != string("-f"))to_mv.push_back(string(argv[i]));
     }
-    fs::path dest(argv[argc - 1]);
-    for (int i = 0; i < to_rename_move.size(); ++i) {
-        my_copy(to_rename_move[i], dest, answerF);
 
+    fs::path destination_path(argv[argc - 1]);
+    if(to_mv.size() > 2){
+        for (int i = 0; i < to_mv.size() -1; ++i) {
+            bool ask = answerF;
+            if(!ask){
+                if (fs::exists(destination_path.string() + "/" + to_mv[i])){
+                    ask = asking_rename();
+                }else{
+                    ask = true;
+                } }
+            if (ask)my_copy(to_mv[i], destination_path);
+
+        }}
+    else {
+        bool ask = answerF;
+        if(!ask){
+            if (fs::exists(destination_path)){
+                ask = asking_rename();
+            } else{
+                ask = true;
+            }}
+        if (ask)my_copy(to_mv[0], to_mv[1]);
     }
 }
 
