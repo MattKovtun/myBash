@@ -7,19 +7,20 @@
 #include <boost/filesystem.hpp>
 #include <boost/function.hpp>
 #include <unordered_map>
+#include <fstream>
 
-#include "help.h"
+
 #include "lsboost.h"
-
-
-#include "TODO.h"
-#include "MyLs.h"
 #include "parse.h"
-
 
 #undef BOOST_NO_CXX11_SCOPED_ENUMS
 namespace fs = boost::filesystem;
+
 using namespace std;
+
+
+
+
 vector<string> commands = {"md", "rm", "mv", "cp", "mkdir", "TODO", "readfile"};
 vector<string> builtin = {"ls", "cwd", "cd"};
 
@@ -39,9 +40,9 @@ void start_builtin_func(string b) {
     vector<string> tokens(beg, end);
     string func = tokens[0];
     if (func == "cd") {
-        if(tokens.size() != 1){
-        cd(tokens[1]);}
-        else{cout << "Please enter directory... "<< endl;}
+        if (tokens.size() != 1) {
+            cd(tokens[1]);
+        } else { cout << "Please enter directory... " << endl; }
         return;
     } else if (func == "ls") {
         c_args = create_c(tokens, "name");
@@ -92,38 +93,38 @@ int start_process(string command) {
 int main(int argc, char *argv[]) {
     parse:DIRECTORY_PATH = (fs::current_path());
     if (argc == 2) {
-        std::ifstream file(argv[1]);
-        std::string str;
-        while (std::getline(file, str)) {
+        ifstream file(argv[1]);
+        string str;
+        while (getline(file, str)) {
             cout << "~ " << str << endl;
             start_process(str);
         }
         return 0;
     }
 
-        bool quit = false;
-        cout
-                << "Welcome to my shell! Type : \"mkdir -h\" for example, to see help!\nType \"TODO\" to see problems to be solved."
-                << endl;
+    bool quit = false;
+    cout
+            << "Welcome to my shell! Type : \"mkdir -h\" for example, to see help!\nType \"TODO\" to see problems to be solved."
+            << endl;
 
-        while (!quit) {
-            string command;
-            cout << "~ ";
+    while (!quit) {
+        string command;
+        cout << "~ ";
 
-            getline(cin, command);
-            string tmp = command;
-            tmp.erase(std::remove(tmp.begin(),tmp.end(),' '),tmp.end());
-            if (tmp.empty())continue;
+        getline(cin, command);
+        string tmp = command;
+        tmp.erase(std::remove(tmp.begin(), tmp.end(), ' '), tmp.end());
+        if (tmp.empty())continue;
 
-            vector<string> vector_commands = tokenize(command);
-            if (vector_commands[0] == "exit" && vector_commands.size() >= 2) {
-                int status = stoi(vector_commands[1]);
-                return status;
-            } else if (vector_commands[0] == "exit")
-                return 0;
+        vector<string> vector_commands = tokenize(command);
+        if (vector_commands[0] == "exit" && vector_commands.size() >= 2) {
+            int status = stoi(vector_commands[1]);
+            return status;
+        } else if (vector_commands[0] == "exit")
+            return 0;
 
-            start_process(command);
-        }
+        start_process(command);
+    }
 
 }
 

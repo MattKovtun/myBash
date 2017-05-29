@@ -1,9 +1,10 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.5)
 project(myBash)
 
+# FF
 set(CMAKE_CXX_STANDARD 14)
 
-set(SOURCE_FILES main.cpp lsboost.h help.h parse.h TODO.h MyLs.h)
+set(SOURCE_FILES main.cpp lsboost.h help.h parse.cpp parse.h MyLs.h help.cpp MyLs.cpp lsboost.cpp)
 add_executable(myBash ${SOURCE_FILES})
 
 FIND_PACKAGE( Boost COMPONENTS program_options filesystem system REQUIRED )

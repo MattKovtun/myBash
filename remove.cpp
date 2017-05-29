@@ -14,7 +14,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/function.hpp>
 #include <unordered_map>
-#include "help.h"
+#include "help.cpp"
 
 #undef BOOST_NO_CXX11_SCOPED_ENUMS
 namespace fs = boost::filesystem;

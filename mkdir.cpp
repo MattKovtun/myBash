@@ -11,7 +11,7 @@
 #include <iostream>
 #include <boost/filesystem.hpp>
 #include <boost/function.hpp>
-#include "help.h"
+#include "help.cpp"
 
 namespace fs = boost::filesystem;
 using namespace std;
