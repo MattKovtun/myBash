@@ -6,9 +6,10 @@
 #include <boost/filesystem.hpp>
 #include <boost/function.hpp>
 #include <unordered_map>
+#include <sstream>
 
 #include "help.h"
-#include "lsboost.h"
+//#include "lsboost.h"
 
 
 
@@ -63,7 +64,10 @@ void parse(string b) {
         if(tokens.size() == 1) cout << "Please enter all arguments or --help to see what to do" << endl;
         else{ c_args = create_c(tokens, "cp");}
 
-    } else {
+    }
+    else if (func == "ls") {
+        c_args = create_c(tokens, "ls");
+    }else {
         c_args = create_c(tokens, func);
         execvp(c_args[0], const_cast<char *const *>( c_args.data()));
         perror("Failed to start your command.");

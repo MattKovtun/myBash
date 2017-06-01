@@ -12,7 +12,6 @@
 #include <boost/filesystem.hpp>
 #include <boost/function.hpp>
 
-#include "MyLs.h"
 
 #undef BOOST_NO_CXX11_SCOPED_ENUMS
 namespace fs = boost::filesystem;

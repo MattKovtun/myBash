@@ -21,8 +21,8 @@ using namespace std;
 
 
 
-vector<string> commands = {"md", "rm", "mv", "cp", "mkdir", "TODO", "readfile"};
-vector<string> builtin = {"ls", "cwd", "cd"};
+vector<string> commands = {"md", "rm", "mv", "cp", "mkdir", "TODO", "ls"};
+vector<string> builtin = { "cwd", "cd"};
 
 
 vector<string> tokenize(string b) {
@@ -43,12 +43,12 @@ void start_builtin_func(string b) {
         if (tokens.size() != 1) {
             cd(tokens[1]);
         } else { cout << "Please enter directory... " << endl; }
-        return;
-    } else if (func == "ls") {
-        c_args = create_c(tokens, "name");
-        ls(c_args.size(), c_args.data());
-        return;
-    } else if (func == "cwd") {
+        return;}
+//    } else if (func == "ls") {
+//        c_args = create_c(tokens, "name");
+//        ls(c_args.size(), c_args.data());
+//        return;
+     else if (func == "cwd") {
         pwd(b);
         return;
     }
@@ -63,7 +63,12 @@ int start_process(string command) {
         start_builtin_func(command);
         return 1;
     }
-    pid_t pid = fork();
+    long index = command.find("#");
+    if(index != -1) {
+        string sub_str2 = command.substr (0, index);
+        command = sub_str2;}
+
+        pid_t pid = fork();
 
     if (pid == -1) {
         perror("fork failed");
@@ -75,7 +80,6 @@ int start_process(string command) {
         vector<const char *> c_args;
         istream_iterator<string> beg(buf), end;
         vector<string> tokens(beg, end);
-
         parse(command);
 //        } else cout << "Command not found" << endl;
 
@@ -113,12 +117,18 @@ int main(int argc, char *argv[]) {
 
         getline(cin, command);
         string tmp = command;
+//        long index = command.find("#");
+//        if(index != -1) {
+//            string sub_str2 = command.substr (0, index);
+//            command = sub_str2;
+//        }
         tmp.erase(std::remove(tmp.begin(), tmp.end(), ' '), tmp.end());
         if (tmp.empty())continue;
-
         vector<string> vector_commands = tokenize(command);
         if (vector_commands[0] == "exit" && vector_commands.size() >= 2) {
-            int status = stoi(vector_commands[1]);
+            int status;
+            if(vector_commands[1][0] == '#'){ status = 0;}
+            else{ status = stoi(vector_commands[1]);}
             return status;
         } else if (vector_commands[0] == "exit")
             return 0;

@@ -4,13 +4,13 @@ project(myBash)
 # FF
 set(CMAKE_CXX_STANDARD 14)
 
-set(SOURCE_FILES main.cpp lsboost.h help.h parse.cpp parse.h MyLs.h help.cpp MyLs.cpp lsboost.cpp)
+set(SOURCE_FILES main.cpp lsboost.h help.h parse.cpp parse.h help.cpp  lsboost.cpp)
 add_executable(myBash ${SOURCE_FILES})
 
 FIND_PACKAGE( Boost COMPONENTS program_options filesystem system REQUIRED )
 
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
-target_link_libraries( myBash ${Boost_LIBRARIES} -lboost_regex)
+target_link_libraries( myBash ${Boost_LIBRARIES} )
 
 
 
@@ -67,3 +67,14 @@ INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 target_link_libraries(mv ${Boost_LIBRARIES})
 
 
+project(ls)
+
+set(CMAKE_CXX_STANDARD 14)
+
+set(SOURCE_FILES MyLs.cpp help.h)
+add_executable(ls ${SOURCE_FILES})
+
+FIND_PACKAGE(Boost COMPONENTS program_options filesystem system REQUIRED )
+
+INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
+target_link_libraries(ls ${Boost_LIBRARIES} -lboost_regex)

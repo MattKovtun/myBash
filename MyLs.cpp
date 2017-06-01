@@ -1,13 +1,9 @@
-//
-// Created by matt on 26.05.17.
-//
 
 //
 // Created by natasha on 06.04.17.
 //
 #include <iostream>
 
-#define BOOST_NO_CXX11_SCOPED_ENUMS
 
 #include <boost/filesystem.hpp>
 #include <boost/function.hpp>
@@ -15,19 +11,16 @@
 #include <fstream>
 
 
-#include "lsboost.h"
-#include "parse.h"
 
-#undef BOOST_NO_CXX11_SCOPED_ENUMS
-namespace fs = boost::filesystem;
 
-using namespace std;
 
 #include <boost/regex.hpp>
 #include <iomanip>
-#include "help.h"
+#include "help.cpp"
 
+namespace fs = boost::filesystem;
 
+using namespace std;
 //отримати розмір папки
 void getFoldersize(string rootFolder, unsigned long long &f_size) {
     fs::path folderPath(rootFolder);
@@ -152,23 +145,23 @@ multimap<time_t, fs::path> lsDir(fs::path someDir, const boost::regex my_filter)
     return result_set;
 };
 
-void ls(int argc, const char *argv[]) {
-
+int main(int argc, char *argv[]) {
     bool h = false;
-    for (int i = 1; i < argc - 1; i++) {
+    for (int i = 1; i < argc; i++) {
         if (!h) h = (argv[i] == string("-h") ? true : false);
         if (!h) h = (argv[i] == string("--help") ? true : false);
     }
     if (h) {
         helping(5);
         helping(6);
+        return 0;
     }
     else {
         fs::path someDir;
         typedef multimap<time_t, fs::path> result_set_t;
         result_set_t result_set;
         vector<string> flagsLs = {"-l", "-h", "--sort=U", "--sort=S", "--sort=t", "--sort=X", "-r", "--sort=N"};
-        if (argc != 2 && find(flagsLs.begin(), flagsLs.end(), argv[1]) ==
+        if (argc != 1 && find(flagsLs.begin(), flagsLs.end(), argv[1]) ==
                          flagsLs.end()) {// перевірка чи перший ел це диреткорія (або маска)
             if (fs::is_directory(argv[1])) {
                 someDir = argv[1];// це директорія !!!
@@ -179,6 +172,7 @@ void ls(int argc, const char *argv[]) {
                     } else {
                         cout << "Error: you can't start expression with *(you can start with .*   )" << endl;
                         helping(6);
+                        return 0;
                     }
                 } else {
                     const boost::regex my_filter2("0");
@@ -192,6 +186,7 @@ void ls(int argc, const char *argv[]) {
                 } else {
                     cout << "Error: you can't start expression with * " << endl;
                     helping(6);
+                    return 0;
                 }
             }
         } else {
@@ -214,7 +209,6 @@ void ls(int argc, const char *argv[]) {
         }
         if (sorting == "0") sorting = "N";
         printMapLs(result_set, answerL, sorting, answerReverse);
-
         /*const boost::regex my_filter( "r.*.txt" );
         mask("/home/natasha", my_filter);*/
     }
