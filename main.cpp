@@ -8,6 +8,7 @@
 #include <boost/function.hpp>
 #include <unordered_map>
 #include <fstream>
+#include <fcntl.h>
 
 
 #include "lsboost.h"
@@ -68,6 +69,7 @@ int start_process(string command) {
         string sub_str2 = command.substr (0, index);
         command = sub_str2;}
 
+
         pid_t pid = fork();
 
     if (pid == -1) {
@@ -80,6 +82,7 @@ int start_process(string command) {
         vector<const char *> c_args;
         istream_iterator<string> beg(buf), end;
         vector<string> tokens(beg, end);
+
         parse(command);
 //        } else cout << "Command not found" << endl;
 

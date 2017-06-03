@@ -199,7 +199,7 @@ int main(int argc, char *argv[]) {
         bool answerL = false;
         string sorting = "0";
         bool answerReverse = false;
-        for (int i = 1; i < argc - 1; i++) {
+        for (int i = 1; i < argc; i++) {
             if (!answerL)answerL = (argv[i] == string("-l") ? true : false);
             if (!answerReverse)answerReverse = (argv[i] == string("-r") ? true : false);
             if (sorting == "0") sorting = (argv[i] == string("--sort=U") ? "U" : "0");
