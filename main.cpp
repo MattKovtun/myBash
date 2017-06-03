@@ -45,10 +45,6 @@ void start_builtin_func(string b) {
             cd(tokens[1]);
         } else { cout << "Please enter directory... " << endl; }
         return;}
-//    } else if (func == "ls") {
-//        c_args = create_c(tokens, "name");
-//        ls(c_args.size(), c_args.data());
-//        return;
      else if (func == "cwd") {
         pwd(b);
         return;
@@ -76,20 +72,15 @@ int start_process(string command) {
         perror("fork failed");
         exit(EXIT_FAILURE);
     } else if (pid == 0) {
-//        if (find(commands.begin(), commands.end(), vector_commands[0]) !=
-//            commands.end()) { //пошук наявності команди у всіх командах
         istringstream buf(command);
         vector<const char *> c_args;
         istream_iterator<string> beg(buf), end;
         vector<string> tokens(beg, end);
 
         parse(command);
-//        } else cout << "Command not found" << endl;
 
-//        cout << endl;
         _exit(EXIT_SUCCESS);
     } else {
-//        printf("Hello from parent\n");
         int status;
         (void) waitpid(pid, &status, 0);
     }
@@ -120,11 +111,7 @@ int main(int argc, char *argv[]) {
 
         getline(cin, command);
         string tmp = command;
-//        long index = command.find("#");
-//        if(index != -1) {
-//            string sub_str2 = command.substr (0, index);
-//            command = sub_str2;
-//        }
+
         tmp.erase(std::remove(tmp.begin(), tmp.end(), ' '), tmp.end());
         if (tmp.empty())continue;
         vector<string> vector_commands = tokenize(command);
@@ -140,6 +127,3 @@ int main(int argc, char *argv[]) {
     }
 
 }
-
-// to add repsonse from child process add flush
-//   /home/matt/CLionProjects/myBash
