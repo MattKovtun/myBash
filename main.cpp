@@ -60,11 +60,20 @@ int start_process(string command) {
         start_builtin_func(command);
         return 1;
     }
+    //коментарі
     long index = command.find("#");
     if(index != -1) {
         string sub_str2 = command.substr (0, index);
         command = sub_str2;}
-
+    //коментарі ^
+    // конвеєр
+    vector<string> strings;
+    istringstream f(command);
+    string s;
+    while (getline(f, s, '|')) {
+        strings.push_back(s);
+    }
+    //коонвеєр^
 
         pid_t pid = fork();
 
@@ -72,10 +81,10 @@ int start_process(string command) {
         perror("fork failed");
         exit(EXIT_FAILURE);
     } else if (pid == 0) {
-        istringstream buf(command);
-        vector<const char *> c_args;
-        istream_iterator<string> beg(buf), end;
-        vector<string> tokens(beg, end);
+//        istringstream buf(command);
+//        vector<const char *> c_args;
+//        istream_iterator<string> beg(buf), end;
+//        vector<string> tokens(beg, end);
 
         parse(command);
 

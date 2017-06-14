@@ -67,26 +67,37 @@ void parse(string b) {
         dup2(file, 2);
         close(file);
         tokens.erase(tokens.end() - 2, tokens.end());
-    }}
+    }else if (tokens[tokens.size() - 2] == "<"){
+            ifstream toOpenFile(tokens[tokens.size()-1]);
+            tokens.erase(tokens.end() - 2, tokens.end());
+            string word;
+            if(toOpenFile.good()){
+                while (toOpenFile >> word)
+                {
+                    tokens.push_back(word);
+                }
+            }
+        }
+    }
 
     string func = tokens[0];
     if (func == "mv") {
-        if (tokens.size() == 1) cout << "Please enter all arguments or --help to see what to do" << endl;
+        if (tokens.size() == 1) {cout << "Please enter all arguments or --help to see what to do" << endl; return;}
         else {
             c_args = create_c(tokens, "mv");
         }
 
     } else if (func == "mkdir") {
-        if (tokens.size() == 1) cout << "Please enter all arguments or --help to see what to do" << endl;
+        if (tokens.size() == 1) {cout << "Please enter all arguments or --help to see what to do" << endl;  return;}
         else { c_args = create_c(tokens, "mkdir"); }
 
 
     } else if (func == "rm") {
-        if (tokens.size() == 1) cout << "Please enter all arguments or --help to see what to do" << endl;
+        if (tokens.size() == 1){ cout << "Please enter all arguments or --help to see what to do" << endl; return;}
         else { c_args = create_c(tokens, "rm"); }
 
     } else if (func == "cp") {
-        if (tokens.size() == 1) cout << "Please enter all arguments or --help to see what to do" << endl;
+        if (tokens.size() == 1){ cout << "Please enter all arguments or --help to see what to do" << endl; return;}
         else { c_args = create_c(tokens, "cp"); }
 
     } else if (func == "ls") {
