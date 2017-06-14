@@ -68,6 +68,7 @@ void parse(string b) {
         close(file);
         tokens.erase(tokens.end() - 2, tokens.end());
     }else if (tokens[tokens.size() - 2] == "<"){
+            //Redirecting input running processes
             ifstream toOpenFile(tokens[tokens.size()-1]);
             tokens.erase(tokens.end() - 2, tokens.end());
             string word;
