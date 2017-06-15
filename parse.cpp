@@ -40,11 +40,34 @@ vector<const char *> create_c(const vector<string> &tokens, const string &name_o
 }
 
 void parse(string b) {
+    //змінні середовища
+
+    size_t found_echo = b.find("echo $");
+    if (found_echo!=std::string::npos){
+        string echoVar = b.substr(found_echo+6, b.length());
+        char* echoV = getenv (echoVar.c_str());
+        cout << echoV<< endl;
+        return;
+    }
+
+    size_t found = b.find("$");
+    if (found!=std::string::npos){
+        string echoVar = b.substr(found+1, b.length());
+        char* echoV = getenv (echoVar.c_str());
+        if (echoV!=NULL){
+            b.replace(found,b.length(),echoV);
+        }
+    }
+    //змінні середовища ^
+
     vector<const char *> c_args;
     istringstream buf(b);
     istream_iterator<string> beg(buf), end;
     vector<string> tokens(beg, end);
+
     //Перенаправлення виводу (stdout та stderr) запущених процесів
+
+
 
     if(tokens.size() > 2){
         if(tokens[tokens.size() -1] == "2&>1"){
@@ -79,9 +102,11 @@ void parse(string b) {
                 }
             }
         }
+
     }
 
     string func = tokens[0];
+    cout << "parse : func is:" << func << endl;
     if (func == "mv") {
         if (tokens.size() == 1) {cout << "Please enter all arguments or --help to see what to do" << endl; return;}
         else {
@@ -103,7 +128,8 @@ void parse(string b) {
 
     } else if (func == "ls") {
         c_args = create_c(tokens, "ls");
-    } else {
+    }
+    else {
         c_args = create_c(tokens, func);
         execvp(c_args[0], const_cast<char *const *>( c_args.data()));
         perror("Failed to start your command.");

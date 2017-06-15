@@ -60,6 +60,9 @@ int start_process(string command) {
         start_builtin_func(command);
         return 1;
     }
+
+
+
     //коментарі
     long index = command.find("#");
     if(index != -1) {
@@ -70,8 +73,25 @@ int start_process(string command) {
     vector<string> strings;
     istringstream f(command);
     string s;
+    vector<string> cmd;
+
+    //змінні середовища
+    //export VAR=ABCC
+    if (command.find("export") != -1){
+        size_t found = command.find("=");
+        command.replace(0, 7, "");
+        if (found!=-1){
+            string namVar = command.substr(0,found-7);
+            string var = command.substr(found-6, command.length());
+            setenv(namVar.c_str(), var.c_str(), true);
+            cout << namVar << ", " << var << endl;
+        }
+        return 1;
+    }
+    //
     while (getline(f, s, '|')) {
         strings.push_back(s);
+        cmd.push_back(s);
     }
     //коонвеєр^
 
@@ -80,7 +100,69 @@ int start_process(string command) {
     if (pid == -1) {
         perror("fork failed");
         exit(EXIT_FAILURE);
-    } else if (pid == 0) {
+    }
+    if(cmd.size() >=2){
+        int pipefd[2];
+        pipe(pipefd);
+        //for(int i = 0; i < cmd.size() -1;){
+
+        if (pid == 0) {
+//            vector<const char *> c_args;
+//            istringstream buf(cmd[0]);
+//            istream_iterator<string> beg(buf), end;
+//            vector<string> tokens(beg, end);
+//            c_args = create_c(tokens, tokens[0]);
+
+            close(pipefd[0]);
+            dup2(pipefd[0], 0);
+//
+//
+//            if(tokens[0] == "mkdir" || tokens[0] == "rm" || tokens[0] == "cp" || tokens[0] == "ls"){
+//                string s = DIRECTORY_PATH.string() + "/" + tokens[0];
+//
+//                const char *path = s.c_str();
+//                execvp(path, const_cast<char *const *>( c_args.data()));
+//                perror("Failed to start excec");}
+//            else{
+//                execvp(c_args[0], const_cast<char *const *>( c_args.data()));
+//                perror("Failed to start your command.");
+//                cout << " But we can help you: " << endl;
+//            }
+            parse(cmd[0]);
+            close(pipefd[1]);
+            _exit(EXIT_SUCCESS);
+        } else {
+            int status;
+            (void) waitpid(pid, &status, 0);
+
+//            vector<const char *> c_args_1;
+//            istringstream buf(cmd[1]);
+//            istream_iterator<string> beg(buf), end;
+//            vector<string> tokens(beg, end);
+//            c_args_1 =create_c(tokens, tokens[0]);
+
+
+            close(pipefd[1]);
+            dup2(pipefd[1], 1);
+
+//            if(tokens[0] == "mkdir" || tokens[0] == "rm" || tokens[0] == "cp" || tokens[0] == "ls"){
+//            string s = DIRECTORY_PATH.string() + "/" + tokens[0];
+//
+//            const char *path = s.c_str();
+//            execvp(path, const_cast<char *const *>( c_args_1.data()));
+//            perror("Failed to start excec");}
+//            else{
+//                cout << c_args_1[0] << endl;
+//                execvp(c_args_1[0], const_cast<char *const *>( c_args_1.data()));
+//                perror("Failed to start your command.");
+//            }
+            parse(cmd[1]);
+            close(pipefd[0]);
+            _exit(EXIT_SUCCESS);
+        }
+        //cmd.clear();
+    }
+    else{ if (pid == 0) {
 //        istringstream buf(command);
 //        vector<const char *> c_args;
 //        istream_iterator<string> beg(buf), end;
@@ -92,7 +174,7 @@ int start_process(string command) {
     } else {
         int status;
         (void) waitpid(pid, &status, 0);
-    }
+    }}
     return EXIT_SUCCESS;
 }
 
