@@ -84,7 +84,7 @@ int start_process(string command) {
             string namVar = command.substr(0,found-7);
             string var = command.substr(found-6, command.length());
             setenv(namVar.c_str(), var.c_str(), true);
-            cout << namVar << ", " << var << endl;
+           // cout << namVar << ", " << var << endl;
         }
         return 1;
     }

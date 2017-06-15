@@ -101,6 +101,12 @@ void parse(string b) {
                     tokens.push_back(word);
                 }
             }
+        }else if (tokens[tokens.size()-1] == "&"){
+            //запуск програми в фоні
+            close(0);
+            close(1);
+            close(2);
+            tokens.erase(tokens.end() - 1, tokens.end());
         }
 
     }
