@@ -70,13 +70,24 @@ void parse(string b) {
 
 
     if(tokens.size() > 2){
-        if(tokens[tokens.size() -1] == "2&>1"){
+        if(b.find("&") != -1 && b.find("&") != b.length()-1){
+            cout << "Символ & означає виконання програми в фоні. Якщо після нього у такому випадку щось стоїть -- вважати це синтаксичною помилкою. " << endl;
+            return;
+        }
+        if (tokens[tokens.size()-1] == "&"){
+            //запуск програми в фоні
+            close(0);
+            close(1);
+            close(2);
+            tokens.erase(tokens.end() - 1, tokens.end());
+            //ls -l --sort=S & > a.txt
+        }
+
+        else if(tokens[tokens.size() -1] == "2&>1"){
         int file = open(tokens[tokens.size() -2].c_str(), O_TRUNC | O_WRONLY);
         dup2( file, 2);
         dup2(file, 1);
         close(file);
-//    freopen(tokens[tokens.size() -3].c_str(),"a",stderr);
-//        dup2(fileno(stdout), fileno(stderr));
         tokens.erase(tokens.end()-3, tokens.end());
     }
     else if (tokens[tokens.size() - 2] == ">") {
@@ -101,14 +112,7 @@ void parse(string b) {
                     tokens.push_back(word);
                 }
             }
-        }else if (tokens[tokens.size()-1] == "&"){
-            //запуск програми в фоні
-            close(0);
-            close(1);
-            close(2);
-            tokens.erase(tokens.end() - 1, tokens.end());
         }
-
     }
 
     string func = tokens[0];
