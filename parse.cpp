@@ -70,7 +70,7 @@ void parse(string b) {
 
 
     if(tokens.size() > 2){
-        if(b.find("&") != -1 && b.find("&") != b.length()-1){
+        if(b.find("&") != -1 && b.find("&") != b.length()-1 && b.find(">&") == -1){
             cout << "Символ & означає виконання програми в фоні. Якщо після нього у такому випадку щось стоїть -- вважати це синтаксичною помилкою. " << endl;
             return;
         }
@@ -84,12 +84,27 @@ void parse(string b) {
         }
 
         else if(tokens[tokens.size() -1] == "2&>1"){
-        int file = open(tokens[tokens.size() -2].c_str(), O_TRUNC | O_WRONLY);
+            int file = open(tokens[tokens.size() -2].c_str(), O_TRUNC | O_WRONLY);
         dup2( file, 2);
         dup2(file, 1);
         close(file);
         tokens.erase(tokens.end()-3, tokens.end());
-    }
+    }else if(tokens[tokens.size() -2] == ">&"){
+            //>& стосується перенаправлення вводу-виводу
+            string filename = tokens[tokens.size()-1];
+            ifstream toOpenFile(filename);
+            tokens.erase(tokens.end() - 2, tokens.end());
+            string word;
+            if(toOpenFile.good()){
+                while (toOpenFile >> word)
+                {
+                    tokens.push_back(word);
+                }
+            }
+            int file = open(filename.c_str(), O_TRUNC | O_WRONLY);
+            dup2(file, 1);
+            close(file);
+        }
     else if (tokens[tokens.size() - 2] == ">") {
         int file = open(tokens[tokens.size() - 1].c_str(), O_TRUNC | O_WRONLY);
         dup2(file, 1);
@@ -116,7 +131,7 @@ void parse(string b) {
     }
 
     string func = tokens[0];
-    cout << "parse : func is:" << func << endl;
+//    cout << "parse : func is:" << func << endl;
     if (func == "mv") {
         if (tokens.size() == 1) {cout << "Please enter all arguments or --help to see what to do" << endl; return;}
         else {
