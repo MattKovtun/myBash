@@ -71,6 +71,7 @@ void parse(string b) {
 
     if(tokens.size() > 2){
         if(b.find("&") != -1 && b.find("&") != b.length()-1 && b.find(">&") == -1){
+            // виняток
             cout << "Символ & означає виконання програми в фоні. Якщо після нього у такому випадку щось стоїть -- вважати це синтаксичною помилкою. " << endl;
             return;
         }
@@ -80,7 +81,6 @@ void parse(string b) {
             close(1);
             close(2);
             tokens.erase(tokens.end() - 1, tokens.end());
-            //ls -l --sort=S & > a.txt
         }
 
         else if(tokens[tokens.size() -1] == "2&>1"){
@@ -91,6 +91,7 @@ void parse(string b) {
         tokens.erase(tokens.end()-3, tokens.end());
     }else if(tokens[tokens.size() -2] == ">&"){
             //>& стосується перенаправлення вводу-виводу
+            //з одного і того ж файлу беремо вхідні дані + записуємо stdout в нього
             string filename = tokens[tokens.size()-1];
             ifstream toOpenFile(filename);
             tokens.erase(tokens.end() - 2, tokens.end());
@@ -117,7 +118,7 @@ void parse(string b) {
         close(file);
         tokens.erase(tokens.end() - 2, tokens.end());
     }else if (tokens[tokens.size() - 2] == "<"){
-            //Redirecting input running processes
+            //перенаправлення вводу stdin
             ifstream toOpenFile(tokens[tokens.size()-1]);
             tokens.erase(tokens.end() - 2, tokens.end());
             string word;
