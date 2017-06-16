@@ -119,19 +119,24 @@ void parse(string b) {
         tokens.erase(tokens.end() - 2, tokens.end());
     }else if (tokens[tokens.size() - 2] == "<"){
             //перенаправлення вводу stdin
-            ifstream toOpenFile(tokens[tokens.size()-1]);
+            int file = open(tokens[tokens.size() - 1].c_str(), O_RDONLY);
+            dup2(file, 0);
+            close(file);
             tokens.erase(tokens.end() - 2, tokens.end());
-            string word;
-            if(toOpenFile.good()){
-                while (toOpenFile >> word)
-                {
-                    tokens.push_back(word);
-                }
-            }
+//            ifstream toOpenFile(tokens[tokens.size()-1]);
+//            tokens.erase(tokens.end() - 2, tokens.end());
+//            string word;
+//            if(toOpenFile.good()){
+//                while (toOpenFile >> word)
+//                {
+//                    tokens.push_back(word);
+//                }
+//            }
         }
     }
     //ПЕРЕНАПРАВЛЕННЯ ^
-
+//    for (int i =0 ; i < tokens.size() ;++i)cout << tokens[i] << endl;
+//    cout << endl;
     string func = tokens[0];
 //    cout << "parse : func is:" << func << endl;
     if (func == "mv") {
@@ -155,6 +160,8 @@ void parse(string b) {
 
     } else if (func == "ls") {
         c_args = create_c(tokens, "ls");
+    } else if (func == "mygrep"){
+        c_args = create_c(tokens, "mygrep");
     }
     else {
         c_args = create_c(tokens, func);
