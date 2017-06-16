@@ -129,6 +129,7 @@ void parse(string b) {
             }
         }
     }
+    //ПЕРЕНАПРАВЛЕННЯ ^
 
     string func = tokens[0];
 //    cout << "parse : func is:" << func << endl;
