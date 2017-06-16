@@ -181,7 +181,14 @@ int main(int argc, char *argv[]) {
 
         getline(cin, command);
         string tmp = command;
-
+//        if(command.find("echo") != 1 && command.find("echo $") == -1){
+//            char** env;
+//            for (env = envp; *env != 0; env++)
+//            {
+//                char* thisEnv = *env;
+//                cout << thisEnv << ",";
+//            }
+//        }
         tmp.erase(std::remove(tmp.begin(), tmp.end(), ' '), tmp.end());
         if (tmp.empty())continue;
         vector<string> vector_commands = tokenize(command);

@@ -11,6 +11,9 @@
 #include <fstream>
 
 
+
+
+
 #include <boost/regex.hpp>
 #include <iomanip>
 #include "help.cpp"
@@ -18,7 +21,6 @@
 namespace fs = boost::filesystem;
 
 using namespace std;
-
 //отримати розмір папки
 void getFoldersize(string rootFolder, unsigned long long &f_size) {
     fs::path folderPath(rootFolder);
@@ -130,7 +132,8 @@ multimap<time_t, fs::path> lsDir(fs::path someDir, const boost::regex my_filter)
         for (fs::directory_iterator dir_iter(someDir); dir_iter != end_iter; ++dir_iter) {
             if (my_filter == m) {
                 result_set.insert(result_set_t::value_type(fs::last_write_time(dir_iter->path()), *dir_iter));
-            } else {
+            }
+            else {
                 std::vector<std::string> a = mask(someDir.string(), my_filter);
                 mask(someDir.string(), my_filter);
                 if (find(a.begin(), a.end(), *dir_iter) != a.end()) {
@@ -143,13 +146,6 @@ multimap<time_t, fs::path> lsDir(fs::path someDir, const boost::regex my_filter)
 };
 
 int main(int argc, char *argv[]) {
-    string s;
-    while (!cin.fail()) {
-        getline(cin, s);
-
-        cout << s << endl;
-        
-    }
     bool h = false;
     for (int i = 1; i < argc; i++) {
         if (!h) h = (argv[i] == string("-h") ? true : false);
@@ -159,7 +155,8 @@ int main(int argc, char *argv[]) {
         helping(5);
         helping(6);
         return 0;
-    } else {
+    }
+    else {
         fs::path someDir;
         typedef multimap<time_t, fs::path> result_set_t;
         result_set_t result_set;
